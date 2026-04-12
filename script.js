@@ -6,6 +6,94 @@ var practiceState = {};
 var submitted = false;
 var shuffledIndices = [];
 
+var IMAGE_OVERRIDES = {
+  "Consider the following relation between a dependent variable and an independent variable identified by doing simple linear regression. Which among the following relations between the two variables does the graph indicate?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W3A3Q4.png"]
+  },
+  "Consider the following data: Assuming that you apply LDA to this data, what is the estimated covariance matrix?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W3A3Q9.png"]
+  },
+  "Consider the data set given below. Can we use perceptron learning algorithm to build a model using only the given features that achieves zero misclassification error on the training data?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W4A4Q1.png"]
+  },
+  "You are given the following neural networks which take two binary valued inputs x 1 , x 2 ∈ { 0 , 1 } x 1 , x 2 ∈ { 0 , 1 } and the activation function is the threshold function ( h ( x ) = 1 ( h ( x ) = 1 if x > 0 ; 0 x > 0 ; 0 otherwise). Which of the following logical functions does it compute?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W5A5Q3.png"]
+  },
+  "Consider the function f 1 ( x ) = e α 0 + α x 1 + e α 0 + α x f 1 ( x ) = e α 0 + α x 1 + e α 0 + α x and f 2 ( x ) = e β 0 + β x 1 + e β 0 + β x f 2 ( x ) = e β 0 + β x 1 + e β 0 + β x shown in the figure below: Which of the following is correct?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W5A5Q6.png"]
+  },
+  "Consider the following data set. Considering ’profitable’ as the binary valued attribute we are trying to predict, which of the attributes would you select as the root in a decision tree with multi-way splits using the cross-entropy impurity measure?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W6A6Q5.png"]
+  },
+  "For the given confusion matrix, compute the recall": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W7A7Q1.png"]
+  },
+  "Consider the following graphical model, which of the following are false about the model? (multiple options may be correct)": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W8A8Q9.png"]
+  },
+  "Consider the bayesian network shown below. Two students - Manish and Trisha make the following claims: • Manish claims P ( D | { S , L , C } ) = P ( D | { L , C } ) P ( D | { S , L , C } ) = P ( D | { L , C } ) • Trisha claims P ( D | { S , L } ) = P ( D | L ) P ( D | { S , L } ) = P ( D | L ) where P ( X | Y ) P ( X | Y ) denotes probability of event X X given Y Y . Please note that Y Y can be a set. Which of the following is true?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q1.png"]
+  },
+  "Consider the Bayesian graph shown below in Figure 2. The random variables have the following notation: d - Difficulty, i - Intelligence, g - Grade, s - SAT, l - Letter. The random variables are modeled as discrete variables and the corresponding CPDs are as below. What is the probability of P ( i = 1 , d = 0 , g = 2 , s = 1 , l = 1 ) P ( i = 1 , d = 0 , g = 2 , s = 1 , l = 1 ) ?": {
+    q_imgs: [
+      "https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q3.png",
+      "https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q3a.png",
+      "https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q3b.png"
+    ]
+  },
+  "Consider the Bayesian network shown below in Figure 3 Two students - Manish and Trisha make the following claims: • Manish claims P ( H | { S , G , J } ) = P ( H | { G , J } ) P ( H | { S , G , J } ) = P ( H | { G , J } ) • Trisha claims P ( H | { S , C , J } ) = P ( H | { C , J } ) P ( H | { S , C , J } ) = P ( H | { C , J } ) Which of the following is true?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q5.png"]
+  },
+  "Consider the Markov network shown below in Figure 4 Which of the following variables are NOT in the markov blanket of variable \u201c3\u201d shown in the above Figure 4 ? (multiple answers may be correct)": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q6.png"]
+  },
+  "Consider the following Markov Random Field. Which of the following nodes will have no effect on D given the Markov Blanket of D?": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q10.png"]
+  },
+  "Consider the similarity matrix given below: Which of the following shows the hierarchy of clusters created by the single link clustering algorithm.": {
+    q_imgs: ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q1.png"],
+    opt_imgs: [
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q5a.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q5b.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q5c.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q5d.png"]
+    ]
+  },
+  "Four random variables are known to follow the given factorization P ( A 1 = a 1 , A 2 = a 2 , A 3 = a 3 , A 4 = a 4 ) = 1 Z \u03c8 1 ( a 2 , a 3 ) \u03c8 2 ( a 1 , a 4 ) \u03c8 3 ( a 2 , a 4 ) \u03c8 4 ( a 1 , a 3 ) P ( A 1 = a 1 , A 2 = a 2 , A 3 = a 3 , A 4 = a 4 ) = 1 Z \u03c8 1 ( a 2 , a 3 ) \u03c8 2 ( a 1 , a 4 ) \u03c8 3 ( a 2 , a 4 ) \u03c8 4 ( a 1 , a 3 ) The corresponding Markov network would be": {
+    opt_imgs: [
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q8a.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q8b.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q8c.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q8d.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W9A9Q8e.png"]
+    ]
+  },
+  "For the similarity matrix given in the previous question, which of the following shows the hierarchy of clusters created by the complete link clustering algorithm.": {
+    opt_imgs: [
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q6a.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q6b.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q6c.png"],
+      ["https://storage.googleapis.com/swayam-node1-production.appspot.com/assets/img/noc20_cs73/W10A10Q6d.png"]
+    ]
+  }
+};
+
+function applyImageOverrides() {
+  Object.keys(IMAGE_OVERRIDES).forEach(function(questionText) {
+    var override = IMAGE_OVERRIDES[questionText];
+    Object.keys(DATA).forEach(function(weekKey) {
+      DATA[weekKey].forEach(function(question) {
+        if (question.q === questionText) {
+          if (override.q_imgs) question.q_imgs = override.q_imgs.slice();
+          if (override.opt_imgs) question.opt_imgs = override.opt_imgs.map(function(row) { return row.slice(); });
+        }
+      });
+    });
+  });
+}
+
+applyImageOverrides();
+
 function init() {
   var nav = document.getElementById('weekNav');
   for (var w = 1; w <= 12; w++) {
@@ -62,6 +150,16 @@ function escHtml(s) {
     .replace(/\n/g, ' ');
 }
 
+function renderImgs(urls) {
+  if (!urls || !urls.length) return '';
+  var html = '<div class="q-img-wrap">';
+  urls.forEach(function(url) {
+    html += '<img class="q-figure" src="' + escHtml(url) + '" alt="Figure" loading="lazy" onerror="this.parentNode.style.display=\'none\'">';
+  });
+  html += '</div>';
+  return html;
+}
+
 function render() {
   var main = document.getElementById('mainContent');
   if (!currentWeek) {
@@ -98,12 +196,19 @@ function renderRead(qs) {
     html += '<span class="q-num">Q' + (i+1) + '</span>';
     html += '<div class="q-text">' + escHtml(q.q) + '</div>';
     html += '</div>';
+    if (q.q_imgs && q.q_imgs.length) {
+      html += renderImgs(q.q_imgs);
+    }
     html += '<div class="q-options">';
     q.opts.forEach(function(opt, oi) {
       var isCorr = ansSet[oi];
-      html += '<div class="opt' + (isCorr?' correct-opt':'') + '">';
+      var optImgs = (q.opt_imgs && q.opt_imgs[oi]) ? q.opt_imgs[oi] : [];
+      html += '<div class="opt' + (isCorr?' correct-opt':'') + (optImgs.length ? ' has-img' : '') + '">';
       html += '<span class="opt-letter">' + LETTERS[oi] + '.</span>';
-      html += '<span>' + escHtml(opt) + '</span>';
+      html += '<div class="opt-body">';
+      if (opt && opt.trim()) html += '<span>' + escHtml(opt) + '</span>';
+      if (optImgs.length) html += renderImgs(optImgs);
+      html += '</div>';
       html += '</div>';
     });
     html += '</div>';
@@ -142,10 +247,14 @@ function renderPractice(qs) {
     html += '<span class="q-num">Q' + (displayIdx+1) + (isMulti?' &middot;MSQ':'') + '</span>';
     html += '<div class="q-text">' + escHtml(q.q) + '</div>';
     html += '</div>';
+    if (q.q_imgs && q.q_imgs.length) {
+      html += renderImgs(q.q_imgs);
+    }
     html += '<div style="padding: 0 0 4px;">';
     q.opts.forEach(function(opt, oi) {
       var isSel = !!selSet[oi];
       var isCorr = !!ansSet[oi];
+      var optImgs = (q.opt_imgs && q.opt_imgs[oi]) ? q.opt_imgs[oi] : [];
       var cls = 'p-opt';
       var check = '';
       if (submitted) {
@@ -155,13 +264,17 @@ function renderPractice(qs) {
       } else {
         if (isSel) cls += ' selected';
       }
+      if (optImgs.length) cls += ' has-img';
       html += '<div class="' + cls + '"';
       if (!submitted) {
         html += ' onclick="toggleOpt(' + qi + ',' + oi + ',' + (isMulti?'true':'false') + ')"';
       }
       html += '>';
       html += '<span class="opt-letter">' + LETTERS[oi] + '.</span>';
-      html += '<span>' + escHtml(opt) + '</span>';
+      html += '<div class="opt-body">';
+      if (opt && opt.trim()) html += '<span>' + escHtml(opt) + '</span>';
+      if (optImgs.length) html += renderImgs(optImgs);
+      html += '</div>';
       if (check) html += '<span class="p-opt-check">' + check + '</span>';
       html += '</div>';
     });
