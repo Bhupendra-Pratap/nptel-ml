@@ -96,6 +96,13 @@ applyImageOverrides();
 
 function init() {
   var nav = document.getElementById('weekNav');
+
+  var notesBtn = document.createElement('button');
+  notesBtn.className = 'week-btn';
+  notesBtn.textContent = 'Notes';
+  notesBtn.onclick = function() { window.location.href = 'notes.html'; };
+  nav.appendChild(notesBtn);
+
   for (var w = 1; w <= 12; w++) {
     (function(week) {
       var btn = document.createElement('button');

@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPTEL ML — Short Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2331;
+  --border: #30363d;
+  --accent: #58a6ff;
+  --accent2: #3fb950;
+  --accent3: #f78166;
+  --accent4: #d2a679;
+  --accent5: #bc8cff;
+  --accent6: #79c0ff;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #6e7681;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Lora',serif;
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(13,17,23,0.97);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:0;
+}
+.header-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;gap:14px;
+  padding:11px 24px;flex-wrap:wrap;
+}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-weight:700;
+  color:var(--accent4);flex-shrink:0;
+  letter-spacing:.03em;
+}
+.logo span{color:var(--text2);font-weight:400;font-size:.8rem;margin-left:5px;}
+.week-nav{display:flex;gap:4px;flex-wrap:wrap;}
+.wn-btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);padding:4px 11px;border-radius:6px;
+  cursor:pointer;font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;transition:all .15s;
+  text-decoration:none;display:inline-block;
+}
+.wn-btn:hover{border-color:var(--accent);color:var(--accent);}
+.wn-btn.active{background:var(--accent);border-color:var(--accent);color:#0d1117;}
+
+/* ── LAYOUT ── */
+.layout{display:flex;max-width:1280px;margin:0 auto;gap:0;}
+.sidebar{
+  width:220px;flex-shrink:0;
+  position:sticky;top:56px;
+  height:calc(100vh - 56px);
+  overflow-y:auto;
+  border-right:1px solid var(--border);
+  padding:20px 16px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.sb-item{
+  padding:8px 12px;border-radius:8px;
+  cursor:pointer;font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;font-weight:600;color:var(--text2);
+  text-decoration:none;display:block;
+  transition:all .15s;border-left:2px solid transparent;
+  line-height:1.3;
+}
+.sb-item:hover{color:var(--text);background:var(--surface);}
+.sb-item.active{
+  color:var(--accent);border-left-color:var(--accent);
+  background:rgba(88,166,255,.07);
+}
+.sb-item span{font-size:.68rem;color:var(--text3);display:block;font-family:'Lora',serif;font-weight:400;margin-top:1px;}
+
+.main-content{
+  flex:1;min-width:0;
+  padding:40px 48px 80px;
+}
+
+/* ── PAGE TITLE ── */
+.page-hero{margin-bottom:48px;}
+.page-hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:2.6rem;color:var(--accent4);
+  line-height:1.15;margin-bottom:8px;
+}
+.page-hero p{
+  color:var(--text2);font-size:.9rem;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ── WEEK SECTION ── */
+.week-section{
+  margin-bottom:60px;
+  scroll-margin-top:80px;
+}
+.week-heading{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:24px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.week-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:700;
+  padding:4px 10px;border-radius:6px;
+  flex-shrink:0;
+}
+.week-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem;color:var(--text);
+}
+.week-topics{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.73rem;color:var(--text3);
+  margin-left:auto;flex-shrink:0;
+}
+
+/* ── NOTE CARDS ── */
+.notes-grid{
+  display:flex;flex-direction:column;gap:16px;
+}
+.note-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+}
+.note-card-header{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 18px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.note-card-header:hover{background:#1e2a3a;}
+.note-icon{font-size:1rem;flex-shrink:0;}
+.note-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;font-weight:700;color:var(--text);
+  flex:1;
+}
+.note-chevron{
+  color:var(--text3);font-size:.8rem;
+  transition:transform .2s;
+}
+.note-card.open .note-chevron{transform:rotate(180deg);}
+.note-body{
+  padding:18px 20px;
+  display:none;
+  border-top:1px solid var(--border);
+}
+.note-card.open .note-body{display:block;}
+
+/* ── NOTE CONTENT ELEMENTS ── */
+.note-body p{
+  font-size:.9rem;line-height:1.75;color:var(--text);
+  margin-bottom:12px;
+}
+.note-body p:last-child{margin-bottom:0;}
+
+.kv-list{
+  display:grid;gap:6px;margin-bottom:12px;
+}
+.kv{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:.88rem;line-height:1.6;
+}
+.kv-key{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;font-weight:700;
+  color:var(--accent);
+  white-space:nowrap;flex-shrink:0;
+  padding-top:2px;min-width:120px;
+}
+.kv-val{color:var(--text);}
+
+.formula{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--accent5);
+  border-radius:8px;padding:10px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;color:var(--accent6);
+  margin:10px 0;line-height:1.7;
+}
+.formula .formula-label{
+  font-size:.7rem;color:var(--text3);
+  display:block;margin-bottom:4px;font-style:italic;
+}
+
+.tip{
+  background:rgba(63,185,80,.07);
+  border:1px solid rgba(63,185,80,.25);
+  border-left:3px solid var(--accent2);
+  border-radius:8px;padding:10px 14px;
+  font-size:.85rem;line-height:1.65;
+  color:var(--text);margin:10px 0;
+}
+.tip strong{color:var(--accent2);}
+
+.warn{
+  background:rgba(247,129,102,.07);
+  border:1px solid rgba(247,129,102,.25);
+  border-left:3px solid var(--accent3);
+  border-radius:8px;padding:10px 14px;
+  font-size:.85rem;line-height:1.65;
+  color:var(--text);margin:10px 0;
+}
+.warn strong{color:var(--accent3);}
+
+.pill-row{
+  display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;
+}
+.pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:600;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(88,166,255,.1);
+  border:1px solid rgba(88,166,255,.25);
+  color:var(--accent6);
+}
+.pill.green{
+  background:rgba(63,185,80,.1);
+  border-color:rgba(63,185,80,.25);
+  color:var(--accent2);
+}
+.pill.purple{
+  background:rgba(188,140,255,.1);
+  border-color:rgba(188,140,255,.25);
+  color:var(--accent5);
+}
+.pill.orange{
+  background:rgba(210,166,121,.1);
+  border-color:rgba(210,166,121,.25);
+  color:var(--accent4);
+}
+.pill.red{
+  background:rgba(247,129,102,.1);
+  border-color:rgba(247,129,102,.25);
+  color:var(--accent3);
+}
+
+.compare-table{
+  width:100%;border-collapse:collapse;
+  font-size:.83rem;margin:12px 0;
+}
+.compare-table th{
+  background:var(--surface2);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:700;
+  color:var(--accent);padding:8px 12px;
+  text-align:left;border:1px solid var(--border);
+}
+.compare-table td{
+  padding:7px 12px;border:1px solid var(--border);
+  line-height:1.5;color:var(--text);
+}
+.compare-table tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+.subsection{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:700;color:var(--accent4);
+  letter-spacing:.06em;text-transform:uppercase;
+  margin:14px 0 8px;
+}
+
+/* ── COLOURS PER WEEK ── */
+.w1 .week-badge{background:rgba(88,166,255,.15);color:#79c0ff;border:1px solid rgba(88,166,255,.3);}
+.w2 .week-badge{background:rgba(63,185,80,.15);color:#56d364;border:1px solid rgba(63,185,80,.3);}
+.w3 .week-badge{background:rgba(210,166,121,.15);color:#e3b882;border:1px solid rgba(210,166,121,.3);}
+.w4 .week-badge{background:rgba(247,129,102,.15);color:#ff9580;border:1px solid rgba(247,129,102,.3);}
+.w5 .week-badge{background:rgba(188,140,255,.15);color:#d2a8ff;border:1px solid rgba(188,140,255,.3);}
+.w6 .week-badge{background:rgba(121,192,255,.15);color:#79c0ff;border:1px solid rgba(121,192,255,.3);}
+.w7 .week-badge{background:rgba(63,185,80,.15);color:#56d364;border:1px solid rgba(63,185,80,.3);}
+.w8 .week-badge{background:rgba(210,166,121,.15);color:#e3b882;border:1px solid rgba(210,166,121,.3);}
+.w9 .week-badge{background:rgba(247,129,102,.15);color:#ff9580;border:1px solid rgba(247,129,102,.3);}
+.w10 .week-badge{background:rgba(188,140,255,.15);color:#d2a8ff;border:1px solid rgba(188,140,255,.3);}
+.w11 .week-badge{background:rgba(88,166,255,.15);color:#79c0ff;border:1px solid rgba(88,166,255,.3);}
+.w12 .week-badge{background:rgba(63,185,80,.15);color:#56d364;border:1px solid rgba(63,185,80,.3);}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main-content{padding:24px 18px 60px;}
+  .week-title{font-size:1.25rem;}
+  .week-topics{display:none;}
+  .page-hero h1{font-size:1.9rem;}
+}
+@media(max-width:600px){
+  .header-inner{padding:9px 14px;gap:8px;}
+  .logo span{display:none;}
+  .wn-btn{padding:3px 8px;font-size:.7rem;}
+  .kv-key{min-width:90px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">ML·PREP <span>Short Notes</span></div>
+    <nav class="week-nav" id="weekNav"></nav>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar TOC -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <div class="page-hero">
+      <h1>Quick-Revision Notes</h1>
+      <p>NPTEL · Introduction to Machine Learning · Weeks 1 – 12</p>
+    </div>
+
+    <!-- ══════════ WEEK 1 ══════════ -->
+    <section class="week-section w1" id="week1">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 1</span>
+        <h2 class="week-title">ML Fundamentals & Probability</h2>
+        <span class="week-topics">10 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🗂️</span>
+            <span class="note-title">Types of Learning</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Supervised</span><span class="kv-val">Labelled training data. Learns a mapping input → output. Includes <em>classification</em> (discrete output) and <em>regression</em> (continuous output).</span></div>
+              <div class="kv"><span class="kv-key">Unsupervised</span><span class="kv-val">No labels. Finds hidden structure — clustering, density estimation. e.g. grouping documents, social-network communities.</span></div>
+              <div class="kv"><span class="kv-key">Reinforcement</span><span class="kv-val">Agent learns by interacting with an environment, receiving reward signals. e.g. game-playing agents.</span></div>
+            </div>
+            <div class="tip"><strong>Exam trick:</strong> "Grouping" / "clustering" with no labels = unsupervised. Predicting a numeric value = regression. Predicting a category = classification.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📊</span>
+            <span class="note-title">Classification vs Regression</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Classification</span><span class="kv-val">Output is a discrete class label. e.g. spam/not-spam, cricket player type, traffic jam yes/no.</span></div>
+              <div class="kv"><span class="kv-key">Regression</span><span class="kv-val">Output is a real number. e.g. monthly sales in ₹, confirmation probability of a train ticket (0–1 fraction), temperature in °C.</span></div>
+            </div>
+            <div class="warn"><strong>Careful:</strong> "Probability" outputs are still regression (continuous [0,1]). "Predicting if a user likes a song" — binary, so classification.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🏷️</span>
+            <span class="note-title">Feature Types</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Numerical</span><span class="kv-val">Continuous or discrete counts: height, age, weekly expenditure, study hours.</span></div>
+              <div class="kv"><span class="kv-key">Categorical</span><span class="kv-val">Finite set of unordered labels: branch of engineering, ethnicity, blood group.</span></div>
+            </div>
+            <div class="tip"><strong>Key rule:</strong> Number of legs is numerical (counts); engineering branch is categorical (no natural order).</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">⚖️</span>
+            <span class="note-title">Bias–Variance Tradeoff</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Bias</span><span class="kv-val">Error from wrong assumptions (underfitting). High bias = model too simple.</span></div>
+              <div class="kv"><span class="kv-key">Variance</span><span class="kv-val">Sensitivity to training data fluctuations (overfitting). High variance = model too complex.</span></div>
+            </div>
+            <div class="formula">
+              <span class="formula-label">As model complexity ↑</span>
+              Bias ↓ &nbsp;|&nbsp; Variance ↑<br>
+              Underfitting → High Bias, Low Variance<br>
+              Overfitting → Low Bias, High Variance
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🎲</span>
+            <span class="note-title">Probability Essentials</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Addition rule</span>
+              P(A ∪ B) = P(A) + P(B) − P(A ∩ B)
+            </div>
+            <div class="formula">
+              <span class="formula-label">Complement</span>
+              P(neither A nor B) = 1 − P(A ∪ B)
+            </div>
+            <div class="formula">
+              <span class="formula-label">Independent events</span>
+              P(A ∩ B) = P(A) · P(B)
+            </div>
+            <div class="tip"><strong>Eigenvalues from trace/det:</strong> trace = λ₁+λ₂, det = λ₁·λ₂. Solve the quadratic to find eigenvalues.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 2 ══════════ -->
+    <section class="week-section w2" id="week2">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 2</span>
+        <h2 class="week-title">Linear Regression & Feature Selection</h2>
+        <span class="week-topics">10 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📉</span>
+            <span class="note-title">Linear Regression Basics</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Finds the best-fit line/hyperplane by minimizing the <strong>Residual Sum of Squares (RSS)</strong>:</p>
+            <div class="formula">RSS = Σᵢ [yᵢ − f(xᵢ)]²</div>
+            <div class="warn"><strong>Key insight:</strong> A high negative coefficient does NOT automatically mean the feature is unimportant. Coefficient magnitude depends on feature scale. Never drop a feature based on coefficient sign alone — need standardization first.</div>
+            <div class="tip"><strong>Residuals:</strong> Lower is always better. Residual = actual − predicted.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔒</span>
+            <span class="note-title">Regularization: Ridge vs Lasso</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <table class="compare-table">
+              <tr><th>Property</th><th>Ridge (L2)</th><th>Lasso (L1)</th></tr>
+              <tr><td>Penalty</td><td>Σβᵢ²</td><td>Σ|βᵢ|</td></tr>
+              <tr><td>Effect on coeff.</td><td>Shrinks toward 0</td><td>Can set exactly to 0</td></tr>
+              <tr><td>Feature selection</td><td>❌ No</td><td>✅ Yes</td></tr>
+              <tr><td>As λ increases</td><td>Coefficients shrink</td><td>Coefficients shrink / zero out</td></tr>
+            </table>
+            <div class="tip"><strong>For feature selection → always choose Lasso.</strong> Ridge keeps all features; Lasso performs automatic selection by zeroing coefficients.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔍</span>
+            <span class="note-title">Feature Selection Methods</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Best Subset</span><span class="kv-val">Tries all 2ᵖ subsets of p features. Very expensive — O(2ᵖ) model fits.</span></div>
+              <div class="kv"><span class="kv-key">Forward Stepwise</span><span class="kv-val">Start with no features, add best one at a time. Works when <strong>p &gt; n</strong> (more features than samples).</span></div>
+              <div class="kv"><span class="kv-key">Backward Stepwise</span><span class="kv-val">Start with all features, remove worst one at a time. Requires n &gt; p to begin.</span></div>
+            </div>
+            <div class="tip"><strong>Exam rule:</strong> If features &gt; data points → use <em>Forward Stepwise</em> (Backward can't start).</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📍</span>
+            <span class="note-title">K-Nearest Neighbours (KNN) Regression</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>For a query point, find the K nearest training points (Euclidean distance) and predict the <strong>average</strong> of their output values.</p>
+            <div class="formula">
+              <span class="formula-label">Euclidean distance</span>
+              d(x, q) = √[(x₁-q₁)² + (x₂-q₂)² + (x₃-q₃)²]
+            </div>
+            <div class="tip"><strong>Steps for exam:</strong> (1) Compute distance to all training points. (2) Pick K smallest. (3) Average their y-values.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 3 ══════════ -->
+    <section class="week-section w3" id="week3">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 3</span>
+        <h2 class="week-title">Logistic Regression & Discriminant Analysis</h2>
+        <span class="week-topics">9 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📈</span>
+            <span class="note-title">Logistic Regression</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Logistic (sigmoid) function</span>
+              σ(z) = 1 / (1 + e^(−z))  where  z = w·x
+            </div>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">σ(z) itself</span><span class="kv-val"><strong>Non-linear</strong> in the weights (sigmoid shape).</span></div>
+              <div class="kv"><span class="kv-key">Decision boundary</span><span class="kv-val"><strong>Linear</strong> in the weights (hyperplane where z = 0).</span></div>
+              <div class="kv"><span class="kv-key">y|x distribution</span><span class="kv-val">Bernoulli distribution (binary output).</span></div>
+              <div class="kv"><span class="kv-key">Outlier resistance</span><span class="kv-val">More robust than LDA/QDA. The sigmoid saturates, reducing outlier influence.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔵</span>
+            <span class="note-title">LDA vs PCA for Dimensionality Reduction</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <table class="compare-table">
+              <tr><th></th><th>LDA</th><th>PCA</th></tr>
+              <tr><td>Type</td><td>Supervised</td><td>Unsupervised</td></tr>
+              <tr><td>Goal</td><td>Maximize class separability</td><td>Maximize variance</td></tr>
+              <tr><td>Use when</td><td>Classes are well-separated in label space</td><td>No class labels available</td></tr>
+            </table>
+            <div class="tip"><strong>Exam rule:</strong> If data shows distinct class clusters → LDA. If no labels / pure compression → PCA.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📐</span>
+            <span class="note-title">LDA Decision Boundary Calculation</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>For two Gaussian classes with equal covariance (identity matrix), LDA boundary passes through the <strong>midpoint of the means</strong> and is <strong>perpendicular to the line joining them</strong>.</p>
+            <div class="formula">
+              <span class="formula-label">Means: μ₁ = (−1, 2), μ₂ = (1, 4) → midpoint = (0, 3)</span>
+              Direction vector: (1,4)−(−1,2) = (2,2) → normal to boundary<br>
+              Boundary equation: x + y = 3
+            </div>
+            <div class="tip"><strong>Non-linear to linear trick:</strong> Y = mX² + c can be linearized by substituting X' = X². Then apply linear regression on (X', Y).</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 4 ══════════ -->
+    <section class="week-section w4" id="week4">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 4</span>
+        <h2 class="week-title">Perceptron & SVM</h2>
+        <span class="week-topics">6 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🧠</span>
+            <span class="note-title">Perceptron Algorithm</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>A simple linear binary classifier. It converges only if the data is <strong>linearly separable</strong>.</p>
+            <div class="warn"><strong>Critical exam point:</strong> If data is NOT linearly separable → perceptron will NEVER achieve zero training error. It does not converge.</div>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Output</span><span class="kv-val">ŷ = sign(w·x + b)</span></div>
+              <div class="kv"><span class="kv-key">Update rule</span><span class="kv-val">Only updates when a mistake is made: w ← w + y·x</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🎯</span>
+            <span class="note-title">SVM vs Perceptron</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Perceptron</span><span class="kv-val">Finds <em>any</em> separating hyperplane. Not unique — depends on initialization and data order.</span></div>
+              <div class="kv"><span class="kv-key">Linear SVM</span><span class="kv-val">Finds the <em>maximum-margin</em> hyperplane. Unique, optimal solution via convex optimization.</span></div>
+            </div>
+            <div class="warn"><strong>They will NOT always produce the same classifier.</strong> SVM selects the unique maximum-margin solution; perceptron can land on many different hyperplanes.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔧</span>
+            <span class="note-title">Regularization in Practice</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">L2 (Ridge) λ ↑</span><span class="kv-val">Coefficients shrink toward 0 (but never exactly 0).</span></div>
+              <div class="kv"><span class="kv-key">SVM C param</span><span class="kv-val">C = 1/λ. Higher C = less regularization = smaller margin = fits training data more tightly.</span></div>
+              <div class="kv"><span class="kv-key">RBF kernel γ</span><span class="kv-val">Higher γ = tighter decision boundary around each point.</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 5 ══════════ -->
+    <section class="week-section w5" id="week5">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 5</span>
+        <h2 class="week-title">Neural Networks & MLE</h2>
+        <span class="week-topics">9 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔢</span>
+            <span class="note-title">Counting Neural Network Parameters</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Parameters = weights + biases</span>
+              Weights: (inputs × hidden) + (hidden × outputs)<br>
+              Biases: one per neuron in hidden + output layers
+            </div>
+            <p><strong>Example:</strong> 3 inputs → 1 hidden layer (3 neurons) → 1 output</p>
+            <div class="formula">
+              Weights: 3×3 + 3×1 = 9 + 3 = 12<br>
+              Biases:  3 (hidden) + 1 (output) = 4<br>
+              Total = <strong>16 parameters</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📊</span>
+            <span class="note-title">Maximum Likelihood Estimation (MLE)</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>MLE finds the parameter value that makes the observed data most probable.</p>
+            <div class="formula">
+              <span class="formula-label">Normal distribution — MLE of mean</span>
+              μ_MLE = (1/n) Σ xᵢ   (sample mean)
+            </div>
+            <div class="tip"><strong>For Normal distribution:</strong> MLE of μ = sample mean. For data {30, 50, 69, 2, 99}: mean = 250/5 = <strong>50</strong>.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔙</span>
+            <span class="note-title">Backpropagation & Sigmoid</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Sigmoid and its derivative</span>
+              σ(x) = 1/(1+e^−x)<br>
+              σ'(x) = σ(x)·(1 − σ(x))
+            </div>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Backprop</span><span class="kv-val">Chain rule applied backward through the network. Gradient ∂L/∂w = ∂L/∂ŷ · ∂ŷ/∂w.</span></div>
+              <div class="kv"><span class="kv-key">Weight update</span><span class="kv-val">w ← w − η · ∂L/∂w  where η is learning rate.</span></div>
+            </div>
+            <div class="tip"><strong>ANN vs SVM:</strong> ANN loss surface = multiple local minima (non-convex). SVM loss = single global minimum (convex). ANN can give different results each run due to random init.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🧱</span>
+            <span class="note-title">Neural Network Representational Power</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">1 hidden layer</span><span class="kv-val">Can represent any Boolean function (with enough hidden units).</span></div>
+              <div class="kv"><span class="kv-key">2 hidden layers</span><span class="kv-val">Can approximate any continuous function within any tolerance.</span></div>
+              <div class="kv"><span class="kv-key">Overfitting</span><span class="kv-val">More hidden nodes / layers → MORE overfitting risk, not less.</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 6 ══════════ -->
+    <section class="week-section w6" id="week6">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 6</span>
+        <h2 class="week-title">Decision Trees</h2>
+        <span class="week-topics">8 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🌳</span>
+            <span class="note-title">Decision Tree Structure</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Non-leaf node</span><span class="kv-val">Specifies a <strong>test condition</strong> on a feature (e.g. "age &lt; 30?").</span></div>
+              <div class="kv"><span class="kv-key">Leaf node</span><span class="kv-val">Specifies the predicted <strong>class label</strong> (or value).</span></div>
+              <div class="kv"><span class="kv-key">Multi-class</span><span class="kv-val">Decision trees and KNN work natively for multiple classes — no modification needed.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📐</span>
+            <span class="note-title">Impurity Measures (Splitting Criterion)</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Cross-entropy (information gain)</span>
+              H = −Σ pᵢ log₂(pᵢ)
+            </div>
+            <div class="formula">
+              <span class="formula-label">Gini impurity</span>
+              Gini = 1 − Σ pᵢ²
+            </div>
+            <p>Select the attribute that results in the <strong>lowest weighted impurity</strong> after the split (highest information gain).</p>
+            <div class="tip"><strong>Root selection:</strong> The attribute with highest information gain (lowest post-split entropy) becomes the root.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">✂️</span>
+            <span class="note-title">Pruning & Bias-Variance in Trees</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Deeper tree</span><span class="kv-val">Bias ↓, Variance ↑ (overfits). Memorizes training data.</span></div>
+              <div class="kv"><span class="kv-key">Shallow tree</span><span class="kv-val">Bias ↑, Variance ↓ (underfits). Too simple.</span></div>
+              <div class="kv"><span class="kv-key">Pruning</span><span class="kv-val">Collapsed node → replace with mean/majority of all its leaf predictions. Reduces overfitting.</span></div>
+            </div>
+            <div class="formula">
+              <span class="formula-label">Reduced Error Pruning — response_new</span>
+              mean of ALL data points in both collapsed branches combined
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">❓</span>
+            <span class="note-title">Handling Missing Values</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Introduce a new "Missing" category when the <strong>absence itself is informative</strong> — i.e., when the reason for missingness is systematically related to the outcome.</p>
+            <div class="tip"><strong>Good examples:</strong> Emergency operator too busy to record (missingness linked to urgency of event). Doctor skips a measurement because patient is critical (informative missingness).</div>
+            <div class="warn"><strong>Not appropriate:</strong> Accidental loss (coffee spill, fire) — these are random, not informative.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 7 ══════════ -->
+    <section class="week-section w7" id="week7">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 7</span>
+        <h2 class="week-title">Model Evaluation & Ensemble Methods</h2>
+        <span class="week-topics">8 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📋</span>
+            <span class="note-title">Confusion Matrix Metrics</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Key formulas (TP, TN, FP, FN)</span>
+              Precision = TP / (TP + FP)<br>
+              Recall    = TP / (TP + FN)<br>
+              Accuracy  = (TP + TN) / (TP + TN + FP + FN)<br>
+              F-Score   = 2 · Precision · Recall / (Precision + Recall)
+            </div>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Class imbalance</span><span class="kv-val">Use <strong>F-Score</strong>. Accuracy is misleading when one class dominates.</span></div>
+              <div class="kv"><span class="kv-key">ROC curve</span><span class="kv-val">Y-axis = TPR (Recall), X-axis = FPR = FP/(FP+TN). AUROC = area under ROC curve.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🧪</span>
+            <span class="note-title">Experimental Design Considerations</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Sampling Bias</span><span class="kv-val">Training set not representative of true population distribution.</span></div>
+              <div class="kv"><span class="kv-key">Order Effects</span><span class="kv-val">Presentation order of stimuli influences responses — randomize order.</span></div>
+              <div class="kv"><span class="kv-key">Floor/Ceiling</span><span class="kv-val">Task too easy (everyone scores 100%) or too hard (everyone scores 0%) — no useful signal.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🪄</span>
+            <span class="note-title">Bagging vs Stacking</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <table class="compare-table">
+              <tr><th></th><th>Bagging</th><th>Stacking</th></tr>
+              <tr><td>Training data per model</td><td>Bootstrap sample (subset)</td><td>Full dataset</td></tr>
+              <tr><td>Combination</td><td>Uniform vote/average</td><td>Learned meta-classifier</td></tr>
+              <tr><td>Classifiers</td><td>Same algorithm</td><td>Different algorithms allowed</td></tr>
+              <tr><td>Limited data → prefer</td><td>❌</td><td>✅ (uses all data)</td></tr>
+            </table>
+            <div class="tip"><strong>Bagging reduces variance</strong> — works best when classifiers are uncorrelated. If all classifiers are fully correlated → bagging gives no benefit.</div>
+            <div class="tip"><strong>Committee Machines</strong> = special case of 2-layer stacking with uniform weights. Stacking is strictly more powerful (learned weights).</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 8 ══════════ -->
+    <section class="week-section w8" id="week8">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 8</span>
+        <h2 class="week-title">Random Forests, Boosting & Bayesian Networks</h2>
+        <span class="week-topics">9 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🌲</span>
+            <span class="note-title">Random Forests</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Bagging applied to decision trees + random feature selection at each split. Parameter <strong>m</strong> = number of features considered at each split (m &lt;&lt; p).</p>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Decrease m</span><span class="kv-val">↓ correlation between trees (more diverse). Individual tree quality ↓ slightly.</span></div>
+              <div class="kv"><span class="kv-key">Increase m</span><span class="kv-val">↑ individual tree quality. ↑ correlation between trees (less diverse ensemble).</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">💪</span>
+            <span class="note-title">Boosting (AdaBoost)</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Idea</span><span class="kv-val">Train classifiers sequentially. Each focuses on mistakes of the previous one.</span></div>
+              <div class="kv"><span class="kv-key">Misclassified</span><span class="kv-val">Weights of misclassified points are <strong>increased</strong>. Correctly classified weights are decreased.</span></div>
+              <div class="kv"><span class="kv-key">Parallel?</span><span class="kv-val"><strong>No</strong> — sequential. Bagging CAN be parallel.</span></div>
+              <div class="kv"><span class="kv-key">Learner type</span><span class="kv-val">Uses <strong>weak learners</strong> (e.g. shallow trees / stumps). Bagging can use strong learners.</span></div>
+              <div class="kv"><span class="kv-key">Noise sensitivity</span><span class="kv-val">Boosting is MORE sensitive to noise than bagging.</span></div>
+            </div>
+            <div class="tip"><strong>Boosting and bagging both work for regression AND classification.</strong></div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🕸️</span>
+            <span class="note-title">Bayesian Networks — Key Properties</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Structure</span><span class="kv-val">Directed Acyclic Graph (DAG). Edges are directed, <strong>no cycles</strong>.</span></div>
+              <div class="kv"><span class="kv-key">Meaning</span><span class="kv-val">Encodes conditional independence. Does NOT imply causation.</span></div>
+              <div class="kv"><span class="kv-key">D-separation</span><span class="kv-val">Tool to read conditional independences from graph structure.</span></div>
+            </div>
+            <div class="formula">
+              <span class="formula-label">Bayes' Theorem</span>
+              P(A|B) = P(B|A) · P(A) / P(B)
+            </div>
+            <div class="tip"><strong>Joint probability in BN:</strong> P(x₁,...,xₙ) = Π P(xᵢ | parents(xᵢ)). Multiply each node's CPD given its parents.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 9 ══════════ -->
+    <section class="week-section w9" id="week9">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 9</span>
+        <h2 class="week-title">Bayesian & Markov Networks</h2>
+        <span class="week-topics">10 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔗</span>
+            <span class="note-title">Conditional Independence in Bayesian Networks</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>A node is conditionally independent of all non-descendants given its <strong>parents</strong>.</p>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">d-separation</span><span class="kv-val">Path between X and Y is blocked given evidence Z if any node on the path satisfies the blocking condition.</span></div>
+              <div class="kv"><span class="kv-key">Chain: A→B→C</span><span class="kv-val">A ⊥ C | B (B blocks the path)</span></div>
+              <div class="kv"><span class="kv-key">Fork: A←B→C</span><span class="kv-val">A ⊥ C | B (B blocks)</span></div>
+              <div class="kv"><span class="kv-key">Collider: A→B←C</span><span class="kv-val">A ⊥ C (path blocked at B). A NOT ⊥ C | B (observing B opens path!)</span></div>
+            </div>
+            <div class="tip"><strong>Exam strategy:</strong> Identify path type (chain/fork/collider) and apply blocking rules to verify independence claims.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔶</span>
+            <span class="note-title">Markov Networks (Undirected Graphical Models)</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Markov Blanket</span><span class="kv-val">In a Markov network = set of direct neighbours only.</span></div>
+              <div class="kv"><span class="kv-key">Independence</span><span class="kv-val">A node is independent of all other nodes given its Markov blanket.</span></div>
+              <div class="kv"><span class="kv-key">Factorization</span><span class="kv-val">P(x) = (1/Z) Π ψ_c(x_c) — product of clique potentials divided by partition function Z.</span></div>
+            </div>
+            <div class="tip"><strong>Markov Blanket of node X</strong> = its immediate neighbours in the graph. Nodes outside the blanket have NO effect on X given the blanket.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🧮</span>
+            <span class="note-title">Computing Joint Probabilities in BN</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Chain rule of BN</span>
+              P(all vars) = Π_i  P(xᵢ | pa(xᵢ))
+            </div>
+            <p>To find P(i=1, d=0, g=2, s=1, l=1): multiply P(i=1) · P(d=0) · P(g=2|i=1,d=0) · P(s=1|i=1) · P(l=1|g=2).</p>
+            <p>To marginalize over a variable (e.g., difficulty d): sum the joint over all values of d.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 10 ══════════ -->
+    <section class="week-section w10" id="week10">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 10</span>
+        <h2 class="week-title">Clustering Algorithms</h2>
+        <span class="week-topics">6 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔵</span>
+            <span class="note-title">Hierarchical Clustering</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <table class="compare-table">
+              <tr><th>Linkage</th><th>Distance between clusters</th><th>Shape bias</th></tr>
+              <tr><td>Single Link</td><td>Min distance of any pair</td><td>Chain-like / elongated clusters</td></tr>
+              <tr><td>Complete Link</td><td>Max distance of any pair</td><td>Compact, globular clusters</td></tr>
+              <tr><td>Average Link</td><td>Average of all pairs</td><td>Compromise</td></tr>
+            </table>
+            <div class="tip"><strong>Single link</strong> is best for non-convex / oddly shaped clusters. For compact round clusters → complete link.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🗃️</span>
+            <span class="note-title">BIRCH Algorithm</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Cluster Feature (CF) of a cluster = (N, SUM, SS): count, vector sum, sum of squares of all points.</p>
+            <div class="formula">
+              <span class="formula-label">Centroid of combined cluster A ∪ B</span>
+              centroid = (SUM_A + SUM_B) / (N_A + N_B)
+            </div>
+            <div class="tip">CFs are additive — can merge two CFs without revisiting original data.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔎</span>
+            <span class="note-title">DBSCAN</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Density-based clustering. Two parameters: <strong>Eps</strong> (neighbourhood radius) and <strong>MinPts</strong> (minimum points to be a core point).</p>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">MinPts ↑ (same Eps)</span><span class="kv-val">Fewer core points → clusters shrink → more points classified as noise → more clusters (smaller).</span></div>
+              <div class="kv"><span class="kv-key">Shapes</span><span class="kv-val">Can find arbitrary shapes — no assumption. Better than k-means for non-convex clusters.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🌀</span>
+            <span class="note-title">CURE Algorithm</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>Uses representative scatter points (not just centroid) to represent cluster shape. Shrinks them toward the centroid by a fraction α.</p>
+            <div class="tip"><strong>Shape assumption: None.</strong> CURE handles arbitrary cluster shapes, unlike k-means (spherical) or Gaussian EM (elliptical).</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 11 ══════════ -->
+    <section class="week-section w11" id="week11">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 11</span>
+        <h2 class="week-title">MLE, Gaussian Mixtures & EM Algorithm</h2>
+        <span class="week-topics">5 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">📐</span>
+            <span class="note-title">MLE for Common Distributions</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="formula">
+              <span class="formula-label">Normal — MLE of μ</span>
+              μ_MLE = (1/n) Σ xᵢ  (sample mean)
+            </div>
+            <div class="formula">
+              <span class="formula-label">Geometric Pr(X=k) = (1−p)^(k−1)·p — MLE of p</span>
+              p_MLE = n / Σᵢ xᵢ  (reciprocal of sample mean)
+            </div>
+            <div class="formula">
+              <span class="formula-label">Binomial f(x,n,p) = C(n,x)·pˣ·(1−p)^(n−x) — MLE of p</span>
+              p_MLE = Σxᵢ / (n·N)  where N = number of samples
+            </div>
+            <div class="tip"><strong>Method:</strong> Take log-likelihood, differentiate with respect to parameter, set to zero and solve.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🎲</span>
+            <span class="note-title">Gaussian Distribution Parameters</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>A p-dimensional Gaussian needs:</p>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Mean μ</span><span class="kv-val"><strong>p</strong> independent parameters (one per dimension).</span></div>
+              <div class="kv"><span class="kv-key">Covariance Σ</span><span class="kv-val"><strong>p(p+1)/2</strong> independent parameters (symmetric matrix — upper triangle + diagonal).</span></div>
+            </div>
+            <div class="tip">Full covariance: p×p matrix, symmetric → p(p+1)/2 unique entries (not p²).</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔄</span>
+            <span class="note-title">EM Algorithm & Gaussian Mixture Models</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>GMM models data as a weighted sum of Gaussian components. Mixing coefficients πᵢ must satisfy: 0 ≤ πᵢ ≤ 1 and Σπᵢ = 1.</p>
+            <div class="warn"><strong>Invalid constraint:</strong> −1 ≤ πᵢ ≤ 1 is too loose (allows negative probabilities).</div>
+            <div class="formula">
+              <span class="formula-label">EM — two steps per iteration</span>
+              E-step: Q(θ, θᵐ⁻¹) = E_{Z|X,θᵐ⁻¹}[log P(X,Z|θ)]<br>
+              M-step: θᵐ = argmax_θ Q(θ, θᵐ⁻¹)
+            </div>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">E-step</span><span class="kv-val">Compute expected complete log-likelihood using current parameters θᵐ⁻¹.</span></div>
+              <div class="kv"><span class="kv-key">M-step</span><span class="kv-val">Maximize Q w.r.t θ to get new parameters θᵐ.</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════ WEEK 12 ══════════ -->
+    <section class="week-section w12" id="week12">
+      <div class="week-heading">
+        <span class="week-badge">WEEK 12</span>
+        <h2 class="week-title">Reinforcement Learning & Consolidation</h2>
+        <span class="week-topics">7 questions</span>
+      </div>
+      <div class="notes-grid">
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🤖</span>
+            <span class="note-title">RL Framework — State, Action, Reward</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">State (S)</span><span class="kv-val">Complete description of environment needed to make decision. Must satisfy Markov property — fully describes what's needed, no memory of history required.</span></div>
+              <div class="kv"><span class="kv-key">Action (A)</span><span class="kv-val">Things the agent can do to change the state. e.g. pressing pedals, turning wheel.</span></div>
+              <div class="kv"><span class="kv-key">Reward (R)</span><span class="kv-val">Scalar feedback signal. Agent maximizes cumulative reward.</span></div>
+              <div class="kv"><span class="kv-key">Policy (π)</span><span class="kv-val">Mapping from states to actions. Goal = find optimal policy.</span></div>
+            </div>
+            <div class="tip"><strong>Self-driving car:</strong> State = current position/speed/pedals (observable now). Actions = turn wheel, press pedals (direct actuators). Speed, not acceleration — speed is directly observable.</div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🎯</span>
+            <span class="note-title">Markov Property & Valid States</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <p>A state is <strong>Markov</strong> if it captures all information needed to predict the future — the future is conditionally independent of the past given the present state.</p>
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Chess</span><span class="kv-val">✅ All piece positions on board = full state. ❌ Only your pieces = not enough.</span></div>
+              <div class="kv"><span class="kv-key">Tic-Tac-Toe</span><span class="kv-val">✅ Full board snapshot captures all needed info.</span></div>
+              <div class="kv"><span class="kv-key">Tennis ball position</span><span class="kv-val">❌ Need velocity too (position alone not Markov).</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🔍</span>
+            <span class="note-title">Exploration vs Exploitation & Reward Shaping</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <div class="kv-list">
+              <div class="kv"><span class="kv-key">Exploration</span><span class="kv-val">Try new actions to discover potentially better strategies.</span></div>
+              <div class="kv"><span class="kv-key">Exploitation</span><span class="kv-val">Use currently known best action.</span></div>
+              <div class="kv"><span class="kv-key">Non-stationary</span><span class="kv-val">If reward distribution changes over time → must continue exploring. Never stop.</span></div>
+            </div>
+            <div class="warn"><strong>Reward shaping pitfall:</strong> Adding intermediate rewards (e.g. +3 for near-hole) can cause the agent to exploit the sub-goal rather than the true goal. Often <em>hinders</em> learning.</div>
+            <div class="formula">
+              <span class="formula-label">Hoeffding's inequality — sample size for estimation</span>
+              n ≈ 200 · ln(20)  for 10% accuracy at 90% confidence (coin toss)
+            </div>
+          </div>
+        </div>
+
+        <div class="note-card open">
+          <div class="note-card-header" onclick="toggle(this)">
+            <span class="note-icon">🗺️</span>
+            <span class="note-title">Model Interpretability Recap</span>
+            <span class="note-chevron">▾</span>
+          </div>
+          <div class="note-body">
+            <table class="compare-table">
+              <tr><th>Model</th><th>Interpretable?</th><th>Why</th></tr>
+              <tr><td>Decision Trees</td><td>✅ Best</td><td>Human-readable if-then rules</td></tr>
+              <tr><td>Linear Models</td><td>✅ Good</td><td>Coefficient = feature importance</td></tr>
+              <tr><td>SVM</td><td>⚠️ Moderate</td><td>Support vectors explain boundary but not general</td></tr>
+              <tr><td>Neural Networks</td><td>❌ Worst</td><td>Black box — many layers, non-linear</td></tr>
+            </table>
+            <div class="tip"><strong>Exam rule:</strong> Explaining to a non-technical person → Decision Tree is the best choice.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+var weeks = [
+  ['week1','Week 1','ML Fundamentals'],
+  ['week2','Week 2','Linear Regression'],
+  ['week3','Week 3','Logistic & LDA'],
+  ['week4','Week 4','Perceptron & SVM'],
+  ['week5','Week 5','Neural Networks'],
+  ['week6','Week 6','Decision Trees'],
+  ['week7','Week 7','Evaluation & Ensembles'],
+  ['week8','Week 8','Random Forest & BN'],
+  ['week9','Week 9','Graphical Models'],
+  ['week10','Week 10','Clustering'],
+  ['week11','Week 11','MLE & EM'],
+  ['week12','Week 12','Reinforcement Learning']
+];
+
+// Build header nav
+var nav = document.getElementById('weekNav');
+
+var quizBtn = document.createElement('a');
+quizBtn.href = 'index.html';
+quizBtn.className = 'wn-btn';
+quizBtn.textContent = 'Quiz';
+nav.appendChild(quizBtn);
+
+weeks.forEach(function(w) {
+  var btn = document.createElement('a');
+  btn.href = '#' + w[0];
+  btn.className = 'wn-btn';
+  btn.textContent = w[1].replace('Week ','W');
+  nav.appendChild(btn);
+});
+
+// Build sidebar
+var sb = document.getElementById('sidebar');
+weeks.forEach(function(w) {
+  var a = document.createElement('a');
+  a.href = '#' + w[0];
+  a.className = 'sb-item';
+  a.innerHTML = w[1] + '<span>' + w[2] + '</span>';
+  sb.appendChild(a);
+});
+
+// Toggle cards
+function toggle(header) {
+  var card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+// Highlight active sidebar item on scroll
+var sections = document.querySelectorAll('.week-section');
+var sbItems = document.querySelectorAll('.sb-item');
+var wBtns = document.querySelectorAll('.wn-btn');
+
+function onScroll() {
+  var scrollY = window.scrollY + 100;
+  var active = 0;
+  sections.forEach(function(sec, i) {
+    if (sec.offsetTop <= scrollY) active = i;
+  });
+  sbItems.forEach(function(el, i) { el.classList.toggle('active', i === active); });
+  wBtns.forEach(function(el, i) { el.classList.toggle('active', i === active); });
+}
+window.addEventListener('scroll', onScroll, {passive: true});
+onScroll();
+</script>
+</body>
+</html>
